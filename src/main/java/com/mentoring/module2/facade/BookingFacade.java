@@ -156,4 +156,6 @@ public interface BookingFacade {
      */
     boolean cancelTicket(long ticketId);
 
+    void preloadTickets() throws Exception;
+
 }

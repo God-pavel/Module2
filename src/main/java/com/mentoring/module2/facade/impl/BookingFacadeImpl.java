@@ -7,6 +7,12 @@ import com.mentoring.module2.model.User;
 import com.mentoring.module2.service.EventService;
 import com.mentoring.module2.service.TicketService;
 import com.mentoring.module2.service.UserService;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,6 +24,12 @@ public class BookingFacadeImpl implements BookingFacade {
     private final EventService eventService;
     private final TicketService ticketService;
     private final UserService userService;
+
+    @Autowired
+    private JobLauncher jobLauncher;
+
+    @Autowired
+    private Job processJob;
 
     public BookingFacadeImpl(final EventService eventService,
                              final TicketService ticketService,
@@ -109,5 +121,12 @@ public class BookingFacadeImpl implements BookingFacade {
     @Override
     public boolean cancelTicket(final long ticketId) {
         return ticketService.cancelTicket(ticketId);
+    }
+
+    @Override
+    public void preloadTickets() throws Exception{
+        JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+        jobLauncher.run(processJob, jobParameters);
     }
 }

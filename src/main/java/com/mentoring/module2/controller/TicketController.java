@@ -4,7 +4,13 @@ import com.mentoring.module2.facade.BookingFacade;
 import com.mentoring.module2.model.Ticket;
 import com.mentoring.module2.model.impl.EventImpl;
 import com.mentoring.module2.model.impl.UserImpl;
+import com.mentoring.module2.util.GeneratePdfResponse;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -28,11 +34,22 @@ public class TicketController {
         return bookingFacade.bookTicket(userId, eventId, place, Ticket.Category.valueOf(category));
     }
 
-    @GetMapping(params = {"user", "size", "number"})
-    public List<Ticket> getBookedTickets(@RequestParam("user") final UserImpl user,
+    @GetMapping(params = {"id", "name", "email", "size", "number"})
+    public List<Ticket> getBookedTickets(final UserImpl user,
                                          @RequestParam("size") final int size,
                                          @RequestParam("number") final int number) {
         return bookingFacade.getBookedTickets(user, size, number);
+    }
+
+    @GetMapping(params = {"id", "name", "email", "size", "number"}, headers = {"accept=application/pdf"})
+    public ResponseEntity<InputStreamResource> getBookedTicketsPdf(final UserImpl user,
+                                                                   @RequestParam("size") final int size,
+                                                                   @RequestParam("number") final int number) {
+        final List<Ticket> tickets = bookingFacade.getBookedTickets(user, size, number);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(GeneratePdfResponse.convertUsersToPdf(tickets)));
     }
 
     @GetMapping(params = {"event", "size", "number"})
@@ -45,5 +62,11 @@ public class TicketController {
     @DeleteMapping("/{id}")
     public boolean cancelTicket(@PathVariable("id") final long id) {
         return bookingFacade.cancelTicket(id);
+    }
+
+    @RequestMapping("/invokejob")
+    public String handle() throws Exception {
+        bookingFacade.preloadTickets();
+        return "Batch job has been invoked";
     }
 }

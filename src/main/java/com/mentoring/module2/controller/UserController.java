@@ -5,6 +5,7 @@ import com.mentoring.module2.model.User;
 import com.mentoring.module2.model.impl.UserImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -16,8 +17,10 @@ public class UserController {
     private BookingFacade bookingFacade;
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable("id") final long id) {
-        return bookingFacade.getUserById(id);
+    public ModelAndView getUserById(@PathVariable("id") final long id) {
+        final ModelAndView modelAndView = new ModelAndView("users");
+        modelAndView.addObject("users", List.of(bookingFacade.getUserById(id)));
+        return modelAndView;
     }
 
     @GetMapping(params = {"email"})
@@ -26,10 +29,12 @@ public class UserController {
     }
 
     @GetMapping(params = {"name", "size", "number"})
-    public List<User> getUsersByName(@RequestParam("name") final String name,
-                                     @RequestParam("size") final int size,
-                                     @RequestParam("number") final int number) {
-        return bookingFacade.getUsersByName(name, size, number);
+    public ModelAndView getUsersByName(@RequestParam("name") final String name,
+                                       @RequestParam("size") final int size,
+                                       @RequestParam("number") final int number) {
+        final ModelAndView modelAndView = new ModelAndView("users");
+        modelAndView.addObject("users", bookingFacade.getUsersByName(name, size, number));
+        return modelAndView;
     }
 
     @PostMapping

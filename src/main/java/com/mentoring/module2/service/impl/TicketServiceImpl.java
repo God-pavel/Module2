@@ -45,7 +45,7 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> getBookedTickets(final User user, final int pageSize, final int pageNum) {
         return ticketDAO.getAllTickets().stream()
                 .filter(ticket -> ticket.getUserId() == user.getId())
-                .sorted(Comparator.comparing(ticket -> eventService.getEventById(ticket.getEventId()).getDate()))
+//                .sorted(Comparator.comparing(ticket -> eventService.getEventById(ticket.getEventId()).getDate()))
                 .skip((long) (pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
