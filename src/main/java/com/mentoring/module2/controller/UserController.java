@@ -39,7 +39,10 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestParam("name") final String name,
-                           @RequestParam("email") final String email) {
+                           @RequestParam("email") final String email) throws Exception {
+        if (true) {
+            throw new Exception();
+        }
         return bookingFacade.createUser(UserImpl.builder().name(name).email(email).build());
     }
 
@@ -53,5 +56,11 @@ public class UserController {
     @DeleteMapping("/{id}")
     public boolean deleteUser(@PathVariable("id") final long id) {
         return bookingFacade.deleteUser(id);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public String controllerError() {
+
+        return "Controller error";
     }
 }

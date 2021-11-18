@@ -28,8 +28,7 @@ public class Storage {
     @Value("${storage.events}")
     private String eventsFilePath;
 
-    //TODO check
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private Map<String, Event> events;
     private Map<String, Ticket> tickets;
@@ -50,10 +49,10 @@ public class Storage {
     @PostConstruct
     private void initializeStorage() throws IOException {
 
-        final List<UserImpl> userList = objectMapper.readValue(getJsonString(usersFilePath), new TypeReference<List<UserImpl>>() {
+        final List<UserImpl> userList = objectMapper.readValue(getJsonString(usersFilePath), new TypeReference<>() {
         });
 
-        final List<EventImpl> eventList = objectMapper.readValue(getJsonString(eventsFilePath), new TypeReference<List<EventImpl>>() {
+        final List<EventImpl> eventList = objectMapper.readValue(getJsonString(eventsFilePath), new TypeReference<>() {
         });
 
         users = userList.stream().collect(Collectors.toMap(user -> String.valueOf(user.getId()), Function.identity()));

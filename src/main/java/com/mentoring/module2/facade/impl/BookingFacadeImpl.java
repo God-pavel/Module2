@@ -21,15 +21,15 @@ import java.util.List;
 @Service
 public class BookingFacadeImpl implements BookingFacade {
 
-    private final EventService eventService;
-    private final TicketService ticketService;
-    private final UserService userService;
-
     @Autowired
     private JobLauncher jobLauncher;
 
     @Autowired
     private Job processJob;
+
+    private final EventService eventService;
+    private final TicketService ticketService;
+    private final UserService userService;
 
     public BookingFacadeImpl(final EventService eventService,
                              final TicketService ticketService,

@@ -1,7 +1,6 @@
 package com.mentoring.module2.config;
 
 import com.mentoring.module2.dto.TicketDto;
-import com.mentoring.module2.model.impl.TicketImpl;
 import com.mentoring.module2.service.TicketService;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class Writer implements ItemWriter<TicketDto> {
     private TicketService ticketService;
 
     @Override
-    public void write(List<? extends TicketDto> tickets) throws Exception {
+    public void write(List<? extends TicketDto> tickets) {
         if (tickets.size() > 0) {
             for (TicketDto ticket : tickets) {
                 ticketService.bookTicket(ticket.getUserId(), ticket.getEventId(), ticket.getPlace(), ticket.getCategory());

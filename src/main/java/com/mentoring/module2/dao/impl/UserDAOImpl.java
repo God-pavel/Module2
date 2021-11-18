@@ -15,8 +15,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private Storage storage;
-    //TODO: check
-    private final Random random = new Random();
+
+    private static final Random random = new Random();
 
     @Override
     public User getUserById(final long userId) {

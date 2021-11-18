@@ -15,8 +15,8 @@ public class EventDAOImpl implements EventDAO {
 
     @Autowired
     private Storage storage;
-    //TODO: check
-    private final Random random = new Random();
+
+    private static final Random random = new Random();
 
     @Override
     public Collection<Event> getAll() {

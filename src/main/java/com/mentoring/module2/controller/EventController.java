@@ -16,8 +16,7 @@ public class EventController {
     @Autowired
     private BookingFacade bookingFacade;
 
-    //TODO check
-    private final SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+    private static final SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
 
     @GetMapping("/{id}")
     public Event getEventById(@PathVariable("id") final long id) {

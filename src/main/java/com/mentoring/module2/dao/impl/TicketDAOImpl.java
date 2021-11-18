@@ -16,8 +16,8 @@ public class TicketDAOImpl implements TicketDAO {
 
     @Autowired
     private Storage storage;
-    //TODO: check
-    private final Random random = new Random();
+
+    private static final Random random = new Random();
 
     @Override
     public Ticket createTicket(final long userId,

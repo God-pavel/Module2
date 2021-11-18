@@ -5,8 +5,6 @@ import com.mentoring.module2.model.Ticket;
 import com.mentoring.module2.model.impl.EventImpl;
 import com.mentoring.module2.model.impl.UserImpl;
 import com.mentoring.module2.util.GeneratePdfResponse;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -23,8 +21,7 @@ public class TicketController {
     @Autowired
     private BookingFacade bookingFacade;
 
-    //TODO check
-    private final SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+    private static final SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
 
     @PostMapping
     public Ticket bookTicket(@RequestParam("userId") final long userId,
